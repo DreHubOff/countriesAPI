@@ -13,15 +13,13 @@ import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou;
 import com.studying.countries.databinding.ItemCountryBinding;
 import com.studying.countries.network.model.Country;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryHolder> {
 
-    private List<Country> list;
-
-    public CountryAdapter(List<Country> list) {
-        this.list = list;
-    }
+    private List<Country> originalList = new ArrayList<>();
+    private List<Country> sortedList = new ArrayList<>();
 
     @NonNull
     @Override
@@ -32,7 +30,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryH
 
     @Override
     public void onBindViewHolder(@NonNull CountryHolder holder, int position) {
-        Country country = list.get(position);
+        Country country = sortedList.get(position);
         GlideToVectorYou
                 .init()
                 .with(holder.binding.flag.getContext())
@@ -42,12 +40,29 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryH
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return sortedList.size();
     }
 
     public void update(List<Country> list) {
-        this.list.clear();
-        this.list.addAll(list);
+        originalList.clear();
+        originalList.addAll(list);
+
+        sortedList.clear();
+        sortedList.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public void filterByName(String name) {
+        sortedList.clear();
+        if (name.isEmpty()) {
+            sortedList.addAll(originalList);
+        } else {
+            for (Country country : originalList) {
+                if (country.name.toLowerCase().contains(name.toLowerCase())) {
+                    sortedList.add(country);
+                }
+            }
+        }
         notifyDataSetChanged();
     }
 
@@ -69,7 +84,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryH
                 try {
                     binding.ariaItem.setText(String.format("%,d", Integer.parseInt(country.area.replaceAll("\\.0", ""))));
                 } catch (Exception ignored) {
-                // довольно долго мучался с этим моментом. Пока так залепил.
+                    // довольно долго мучался с этим моментом. Пока так залепил.
                 }
             }
             binding.regionItem.setText(country.region);

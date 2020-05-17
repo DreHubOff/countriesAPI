@@ -1,16 +1,12 @@
 package com.studying.countries.ui.main;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
-import com.studying.countries.CountryAdapter;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.studying.countries.R;
 import com.studying.countries.databinding.ActivityMainBinding;
-import com.studying.countries.navigate.OnItemClickListener;
 import com.studying.countries.network.ApiService;
 import com.studying.countries.network.model.Country;
 import com.studying.countries.network.model.CountryDatabase;
@@ -35,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        toastBackBut = Toast.makeText(this,"Click again to exit", Toast.LENGTH_SHORT);
+        toastBackBut = Toast.makeText(this, "Click again to exit", Toast.LENGTH_SHORT);
 
         disposable = ApiService.getData()
                 .subscribeOn(Schedulers.io())
@@ -50,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showError(Throwable t) {
-
+        Toast.makeText(this, "Connection error", Toast.LENGTH_SHORT).show();
     }
 
 

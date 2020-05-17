@@ -32,12 +32,12 @@
             <TextView
                 android:id="@+id/country_name_item"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-black"
                 android:gravity="center_horizontal"
                 android:textColor="#D1030213"
-                android:textSize="17sp"
+                android:textSize="18sp"
                 tools:text="Ukraine" />
 
             <LinearLayout
@@ -50,9 +50,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
+                    android:textColor="#D104004C"
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center_vertical"
                     android:text="Capital:"
+                    android:textStyle="bold"
                     android:textSize="15sp" />
 
                 <TextView
@@ -79,6 +81,8 @@
                     android:fontFamily="sans-serif-smallcaps"
                     android:gravity="center_vertical"
                     android:text="Population: "
+                    android:textStyle="bold"
+                    android:textColor="#D104004C"
                     android:textSize="15sp" />
 
                 <TextView
@@ -114,6 +118,8 @@
                 android:fontFamily="sans-serif-smallcaps"
                 android:gravity="center_vertical"
                 android:text="Region: "
+                android:textStyle="bold"
+                android:textColor="#D104004C"
                 android:textSize="15sp" />
 
             <TextView
@@ -141,6 +147,8 @@
                 android:fontFamily="sans-serif-smallcaps"
                 android:gravity="center_vertical"
                 android:text="Colling codes: "
+                android:textStyle="bold"
+                android:textColor="#D104004C"
                 android:textSize="15sp" />
 
             <TextView
@@ -168,6 +176,8 @@
                 android:fontFamily="sans-serif-smallcaps"
                 android:gravity="center_vertical"
                 android:text="Currencies: "
+                android:textStyle="bold"
+                android:textColor="#D104004C"
                 android:textSize="15sp" />
 
             <TextView
@@ -195,6 +205,8 @@
                 android:fontFamily="sans-serif-smallcaps"
                 android:gravity="center_vertical"
                 android:text="Aria: "
+                android:textColor="#D104004C"
+                android:textStyle="bold"
                 android:textSize="15sp" />
 
             <TextView
