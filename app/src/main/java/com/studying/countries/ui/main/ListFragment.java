@@ -4,13 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.studying.countries.CountryAdapter;
 import com.studying.countries.databinding.FragmentListBinding;
 import com.studying.countries.network.model.CountryDatabase;
+
+import java.util.Map;
 
 public class ListFragment extends Fragment {
     private static final String EXTRA_LIST = "ListFragment.EXTRA_LIST";
@@ -20,7 +21,7 @@ public class ListFragment extends Fragment {
 
     private FragmentListBinding binding;
 
-    private CountryAdapter adapter;
+    private CountryAdapter adapter = null;
 
     public static ListFragment getInstance(CountryDatabase countryDatabase) {
         if (listFragment == null) {
@@ -32,14 +33,12 @@ public class ListFragment extends Fragment {
         return listFragment;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             countryDatabase = getArguments().getParcelable(EXTRA_LIST);
         }
-
     }
 
     @Override
@@ -50,15 +49,10 @@ public class ListFragment extends Fragment {
         adapter.update(countryDatabase.getCountries());
         binding.myList.setAdapter(adapter);
 
-        binding.searchBut.setOnClickListener(this::onSearchButtonClick);
-
         return binding.getRoot();
     }
 
-    public void onSearchButtonClick(View view) {
-        final String inString = binding.inName.getText().toString();
-        adapter.filterByName(inString);
+    public void hasNewData(Map<String, String> inData) {
+        adapter.filter(inData);
     }
-
-
 }

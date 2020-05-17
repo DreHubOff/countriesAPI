@@ -12,14 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou;
 import com.studying.countries.databinding.ItemCountryBinding;
 import com.studying.countries.network.model.Country;
+import com.studying.countries.ui.search.SearchFragment;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryHolder> {
 
     private List<Country> originalList = new ArrayList<>();
+
     private List<Country> sortedList = new ArrayList<>();
+
 
     @NonNull
     @Override
@@ -52,18 +57,66 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryH
         notifyDataSetChanged();
     }
 
-    public void filterByName(String name) {
+    public void filter(Map<String, String> inData) {
         sortedList.clear();
-        if (name.isEmpty()) {
-            sortedList.addAll(originalList);
+        sortedList.addAll(originalList);
+        if (inData.get(SearchFragment.IN_REGION).isEmpty() &&
+                inData.get(SearchFragment.IN_ARIA).isEmpty() &&
+                inData.get(SearchFragment.IN_POPULATION).isEmpty()) {
+            // todo
         } else {
-            for (Country country : originalList) {
-                if (country.name.toLowerCase().contains(name.toLowerCase())) {
-                    sortedList.add(country);
-                }
+            if (!inData.get(SearchFragment.IN_REGION).isEmpty()) {
+                filterByRegion(inData.get(SearchFragment.IN_REGION));
+            }
+            if (!inData.get(SearchFragment.IN_ARIA).isEmpty()) {
+                filterByAria(inData.get(SearchFragment.IN_ARIA));
+            }
+            if (!inData.get(SearchFragment.IN_POPULATION).isEmpty()) {
+                filterByPopulation(inData.get(SearchFragment.IN_POPULATION));
             }
         }
         notifyDataSetChanged();
+    }
+
+    private void filterByPopulation(String inPop) {
+        Iterator<Country> iterator = sortedList.iterator();
+        while (iterator.hasNext()) {
+            Country country = iterator.next();
+            double population = Double.parseDouble(country.population);
+            double inPopulation = Double.parseDouble(inPop);
+            if ((inPopulation - inPopulation * 0.15) > population ||
+                    (inPopulation + inPopulation * 0.15) < population) {
+                iterator.remove();
+            }
+        }
+    }
+
+    private void filterByAria(String inAria) {
+        Iterator<Country> iterator = sortedList.iterator();
+        while (iterator.hasNext()) {
+            Country country = iterator.next();
+            double aria;
+            try {
+                aria = Double.parseDouble(country.area.replaceAll("\\.0", ""));
+            } catch (Exception ignored) {
+                continue;
+                // довольно долго мучался с этим моментом. Пока так залепил. Часто эксепшины выскакивали.
+            }
+            double inAriaDoub = Double.parseDouble(inAria);
+            if ((inAriaDoub - inAriaDoub * 0.15) > aria ||
+                    (inAriaDoub + inAriaDoub * 0.15) < aria) {
+                iterator.remove();
+            }
+        }
+    }
+
+    private void filterByRegion(String inReg) {
+        Iterator<Country> iterator = sortedList.iterator();
+        while (iterator.hasNext()) {
+            if (!iterator.next().region.toLowerCase().startsWith(inReg.toLowerCase())) {
+                iterator.remove();
+            }
+        }
     }
 
 
